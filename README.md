@@ -30,7 +30,7 @@ Se opta por un enfoque multi-horizonte para evitar la acumulación iterativa de 
 #### 2.2 Alcance y Cobertura
 
 Se trabajara sobre el mapa de la Zona Metropolitana de Guadalajara, tomando solamente las principales vías y corredores.
-Se busca obtener alrededor de 80-100 nodos para la red de grafos con granularidad temporal de muestreo cada 5min en horarios predefinidos(dependiendo las consultas de la API).
+Se busca obtener alrededor de 400 nodos para la red de grafos con granularidad temporal de muestreo cada 5min en horarios predefinidos(dependiendo las consultas de la API).
 
 ### 3. Arquitectura del Sistema:
 
@@ -47,7 +47,7 @@ flowchart TD
     end
 
     subgraph PASO2["2. Extracción de Grafo"]
-        G["NetworkX / OSMnx<br/>(Filtro de 80-100 Nodos)"]
+        G["NetworkX / OSMnx<br/>(Filtro de 400 Nodos)"]
     end
 
     subgraph PASO3["3. Preprocesamiento"]
@@ -79,4 +79,4 @@ flowchart TD
 
 Para este modelo espacio-temporal, no se utiliza una matriz de adyacencia binaria común (de puros $0$ y $1$), sino una [[Matriz de Adyacencia Gaussiana Ponderada]] ($W \in \mathbb{R}^{N \times N}$).  Esta al forzar a `0` todas las conexiones lejanas, hace que la matriz queda llena de ceros lo cual ahorra memoria y acelera los cálculos.
 
-Nuestra matriz W guía a la red para comprender cuanto importancia darle al trafico de las avenidas vecinas al momento de predecir el trafico futur
+Nuestra matriz W guía a la red para comprender cuanto importancia darle al trafico de las avenidas vecinas al momento de predecir el trafico futuro
