@@ -5,7 +5,7 @@
 #### 1.1 Contexto:
 
 En el área metropolitana de Guadalajara habitan *1.323.777* de personas de las cuales 82.3 de cada 100  tienen autos, esto a desembocado en una crisis de trafico y  movilidad,  debido a la falta de planeación y desarrollo. Donde el trafico de las arterias principales de la ciudad (Lopez mateos, Vallarta, Carretera Chapala, etc.) se ven colapsadas, ante esto podemos ver como el trafico se esparce a arterias secundarias y terciarais, demostrando que la dinámica del flujo vehicular no es un proceso aislado por calle, sino un sistema en red altamente acoplado, donde un accidente o una inundación en una calle o avenida tiene repercusión que se propaga en las calles o avenidas aledañas.
-// VERIFICAR FUENTES
+
 #### 1.2 Oportunidad y Enfoque:
 
 Este proyecto propone un enfoque espacio-temporal sobre grafos (ST-GNN) que modela simultáneamente:
@@ -17,7 +17,7 @@ Este proyecto propone un enfoque espacio-temporal sobre grafos (ST-GNN) que mode
 Utilizaremos este enfoque ya que nos permite resolver los dos componentes principales del problema (espacio y tiempo), dado que con enfoques tradicionales nos quedamos cortos al no poder comprender y analizar la totalidad del problema, ya sea porque trabajan de manera aislada sin tomar en cuenta que el trafico se propaga al tener embotellamientos y que existe una arquitectura de caminos, o no toman en cuanta el factor del tiempo (horas pico, variabilidad de la semana y días festivos).
 ### 2. Objetivos del Sistema:
 
-#### 2.1
+#### 2.1 Puntos principales
 
 1. **Predicción Directa Multi-Horizonte:** Estimar las velocidades y niveles de congestión a **30 y 60 minutos** en el futuro de forma simultánea.
     
