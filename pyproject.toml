@@ -14,7 +14,8 @@ dependencies = [
     "numpy",
     "pandas",
     "scipy",
-    "scikit-learn"
+    "scikit-learn",
+    "folium"
 ]
 
 [tool.setuptools.packages.find]

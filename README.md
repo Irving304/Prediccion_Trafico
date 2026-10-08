@@ -5,7 +5,6 @@
 #### 1.1 Contexto:
 
 En el área metropolitana de Guadalajara habitan *1.323.777* de personas de las cuales 82.3 de cada 100  tienen autos, esto a desembocado en una crisis de trafico y  movilidad,  debido a la falta de planeación y desarrollo. Donde el trafico de las arterias principales de la ciudad (Lopez mateos, Vallarta, Carretera Chapala, etc.) se ven colapsadas, ante esto podemos ver como el trafico se esparce a arterias secundarias y terciarais, demostrando que la dinámica del flujo vehicular no es un proceso aislado por calle, sino un sistema en red altamente acoplado, donde un accidente o una inundación en una calle o avenida tiene repercusión que se propaga en las calles o avenidas aledañas.
-// VERIFICAR FUENTES
 #### 1.2 Oportunidad y Enfoque:
 
 Este proyecto propone un enfoque espacio-temporal sobre grafos (ST-GNN) que modela simultáneamente:
@@ -77,6 +76,6 @@ flowchart TD
 
 ### 4. Fundamentos Teóricos y Modelado Matemático:
 
-Para este modelo espacio-temporal, no se utiliza una matriz de adyacencia binaria común (de puros $0$ y $1$), sino una [[Matriz de Adyacencia Gaussiana Ponderada]] ($W \in \mathbb{R}^{N \times N}$).  Esta al forzar a `0` todas las conexiones lejanas, hace que la matriz queda llena de ceros lo cual ahorra memoria y acelera los cálculos.
+Para este modelo espacio-temporal, no se utiliza una matriz de adyacencia binaria común (de puros $0$ y $1$), sino una **Matriz de Adyacencia Gaussiana Ponderada** ($W \in \mathbb{R}^{N \times N}$).  Esta al forzar a `0` todas las conexiones lejanas, hace que la matriz queda llena de ceros lo cual ahorra memoria y acelera los cálculos.
 
 Nuestra matriz W guía a la red para comprender cuanto importancia darle al trafico de las avenidas vecinas al momento de predecir el trafico futuro

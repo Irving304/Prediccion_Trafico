@@ -1,32 +1,80 @@
-# Entornos virtuales
+# ==========================================
+# Entornos Virtuales
+# ==========================================
 venv/
 .venv/
 env/
+ENV/
 
-# Archivos de construccion de Python (Opción B / setuptools)
+# ==========================================
+# Secretos y Variables de Entorno (APIs)
+# ==========================================
+.env
+.env.*
+*.env
+
+# ==========================================
+# Empaquetado y Construcción (setuptools / pip)
+# ==========================================
 *.egg-info/
 build/
 dist/
 .eggs/
 
-# Archivos de datos pesados y artefactos
+# ==========================================
+# Datos, Artefactos y Cache Espacial
+# ==========================================
 data/raw/*
 data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
+cache/
 
-# Pesos de modelos y escaladores
+# Archivos pesados de datos y capas espaciales
+*.csv
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.geojson
+*.gpkg
+*.osm
+
+# ==========================================
+# Modelos, Checkpoints y Serialización
+# ==========================================
 models/*
 !models/.gitkeep
 *.pt
 *.pth
 *.npy
 *.npz
+*.pkl
+*.pickle
+*.joblib
+*.onnx
 
-# Cache de Python, IDEs y Jupyter
-__pycache__/
-*.pyc
+# ==========================================
+# Python, Cache y Logs
+# ==========================================
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.log
+logs/
+.pytest_cache/
+.coverage
+
+# ==========================================
+# IDEs y Entornos de Desarrollo
+# ==========================================
 .vscode/
 .idea/
 .ipynb_checkpoints/
-cache/
+
+# ==========================================
+# Sistema Operativo
+# ==========================================
+Thumbs.db
+desktop.ini
+.DS_Store
