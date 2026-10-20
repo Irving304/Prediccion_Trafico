@@ -1,10 +1,10 @@
-# Sistema de Predicción Espacio-Temporal de Tráfico Urbano
+# Sistema de Predicción Espacio-Temporal de Tráfico Urbano (ZMG)
 --------------------------
 ### 1- Visión general y problemática:
 
 #### 1.1 Contexto:
 
-En el área metropolitana de Guadalajara habitan *1.323.777* de personas de las cuales 82.3 de cada 100  tienen autos, esto a desembocado en una crisis de trafico y  movilidad,  debido a la falta de planeación y desarrollo. Donde el trafico de las arterias principales de la ciudad (Lopez mateos, Vallarta, Carretera Chapala, etc.) se ven colapsadas, ante esto podemos ver como el trafico se esparce a arterias secundarias y terciarais, demostrando que la dinámica del flujo vehicular no es un proceso aislado por calle, sino un sistema en red altamente acoplado, donde un accidente o una inundación en una calle o avenida tiene repercusión que se propaga en las calles o avenidas aledañas.
+En el área metropolitana de Guadalajara habitan alrededor de 5,656,000 de personas de las cuales aproximadamente el 82% tiene vehiculo, esto a desembocado en una crisis de trafico y movilidad debido a la falta de planeación y desarrollo. Donde el trafico de las arterias principales de la ciudad (Lopez mateos, Vallarta, Carretera Chapala, etc.) se ven colapsadas, ante esto podemos ver como el trafico se esparce a arterias secundarias y terciarais, demostrando que la dinámica del flujo vehicular no es un proceso aislado por calle, sino un sistema en red altamente acoplado, donde un accidente o una inundación en una calle o avenida tiene repercusión que se propaga en las calles o avenidas aledañas.
 #### 1.2 Oportunidad y Enfoque:
 
 Este proyecto propone un enfoque espacio-temporal sobre grafos (ST-GNN) que modela simultáneamente:
@@ -29,7 +29,7 @@ Se opta por un enfoque multi-horizonte para evitar la acumulación iterativa de 
 #### 2.2 Alcance y Cobertura
 
 Se trabajara sobre el mapa de la Zona Metropolitana de Guadalajara, tomando solamente las principales vías y corredores.
-Se busca obtener alrededor de 400 nodos para la red de grafos con granularidad temporal de muestreo cada 5min en horarios predefinidos(dependiendo las consultas de la API).
+Se busca obtener alrededor de 400 nodos para la red de grafos con granularidad temporal de muestreo cada 5min en horarios predefinidos (dependiendo las consultas de la API).
 
 ### 3. Arquitectura del Sistema:
 
@@ -76,6 +76,4 @@ flowchart TD
 
 ### 4. Fundamentos Teóricos y Modelado Matemático:
 
-Para este modelo espacio-temporal, no se utiliza una matriz de adyacencia binaria común (de puros $0$ y $1$), sino una **Matriz de Adyacencia Gaussiana Ponderada** ($W \in \mathbb{R}^{N \times N}$).  Esta al forzar a `0` todas las conexiones lejanas, hace que la matriz queda llena de ceros lo cual ahorra memoria y acelera los cálculos.
-
-Nuestra matriz W guía a la red para comprender cuanto importancia darle al trafico de las avenidas vecinas al momento de predecir el trafico futuro
+Para este modelo espacio-temporal, no se utiliza una matriz de adyacencia binaria convencional (con valores en $\{0,1\}$), sino una Matriz de Adyacencia Gaussiana Ponderada ($W \in \mathbb{R}^{N \times N}$). Mediante un umbral de distancia (o mecanismo de $k$-NN) que fuerza a $0$ las conexiones entre nodos lejanos, y al implementar la estructura en un formato disperso (sparse matrix), se logra que la matriz conserve principalmente ceros. Esto reduce sustancialmente el consumo de memoria RAM/VRAM y acelera las operaciones matriciales durante la propagación de mensajes.Nuestra matriz $W$ guía a la red para determinar cuánta ponderación o importancia asignar a las condiciones de tráfico de los segmentos viales vecinos al momento de predecir el estado futuro de la red
