@@ -1,5 +1,7 @@
 # Sistema de Predicción Espacio-Temporal de Tráfico Urbano (ZMG)
 --------------------------
+<sub> Irving Gael Robles Ventura //
+Angel Emmanuel Moreno Velasco </sub>
 ### 1- Visión general y problemática:
 
 #### 1.1 Contexto:
