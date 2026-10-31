@@ -18,7 +18,7 @@ Este proyecto propone un enfoque espacio-temporal sobre grafos (ST-GNN) que mode
 Utilizaremos este enfoque ya que nos permite resolver los dos componentes principales del problema (espacio y tiempo), dado que con enfoques tradicionales nos quedamos cortos al no poder comprender y analizar la totalidad del problema, ya sea porque trabajan de manera aislada sin tomar en cuenta que el trafico se propaga al tener embotellamientos y que existe una arquitectura de caminos, o no toman en cuanta el factor del tiempo (horas pico, variabilidad de la semana y días festivos).
 ### 2. Objetivos del Sistema:
 
-#### 2.1
+#### 2.1 Puntos principales
 
 1. **Predicción Directa Multi-Horizonte:** Estimar las velocidades y niveles de congestión a **30 y 60 minutos** en el futuro de forma simultánea.
     
