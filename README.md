@@ -1,4 +1,4 @@
-# Sistema de Predicción Espacio-Temporal de Tráfico Urbano (ZMG)
+# Sistema de Predicción Espacio-Temporal de Tráfico Urbano ZMG
 
 <sub>**Autores:** Irving Gael Robles Ventura // Angel Emmanuel Moreno Velasco</sub>
 
@@ -29,7 +29,7 @@ A diferencia de los enfoques tradicionales que analizan sensores aislados o no c
 3. **Validación Metodológica:** Comparar el rendimiento del modelo frente a enfoques clásicos (Promedio Histórico, Modelo Persistente, LSTM univariada). 
 
 ### 2.1 Alcance y Cobertura
-- **Región:** Zona Metropolitana de Guadalajara (ZMG), México.
+- **Región:** Zona Metropolitana de Guadalajara ZMG, México.
 - **Topología:** Subred vial aproximada de 350 a 400 nodos representativos sobre corredores primarios y secundarios (`motorway`, `primary`, `secondary`).
 - **Granularidad Temporal:** Muestreo aproximadamente cada 5 minutos, lo que permite capturar cambios significativos en el flujo de tráfico.
 
@@ -97,7 +97,7 @@ Esta formulación produce una matriz dispersa que prioriza la influencia de nodo
 
 ## 5. Evaluación del Modelo
 
-El desempeño del modelo se evalúa en cada horizonte de predicción ($t+30$ min y $t+60$ min) mediante:
+El desempeño del modelo se evalúa en cada horizonte de predicción $t+30$ min y $t+60$ min mediante:
 
 - **MAE (Mean Absolute Error):** Error promedio absoluto en km/h.
 - **RMSE (Root Mean Squared Error):** Penaliza errores grandes en picos de congestión.
