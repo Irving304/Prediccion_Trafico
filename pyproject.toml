@@ -6,6 +6,8 @@ build-backend = "setuptools.build_meta"
 name = "prediccion-trafico-zmg"
 version = "0.1.0"
 description = "Prediccion espacio-temporal de trafico en la ZMG con ST-GNN"
+readme = "README.md"
+requires-python = ">=3.10, <3.13"
 dependencies = [
     "osmnx",
     "networkx",
@@ -15,7 +17,9 @@ dependencies = [
     "pandas",
     "scipy",
     "scikit-learn",
-    "folium"
+    "folium",
+    "streamlit",
+    "streamlit-folium"
 ]
 
 [tool.setuptools.packages.find]

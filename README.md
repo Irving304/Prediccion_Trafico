@@ -1,57 +1,60 @@
 # Sistema de Predicción Espacio-Temporal de Tráfico Urbano (ZMG)
---------------------------
-### 1- Visión general y problemática:
 
-#### 1.1 Contexto:
+<sub>**Autores:** Irving Gael Robles Ventura // Angel Emmanuel Moreno Velasco</sub>
 
-En el área metropolitana de Guadalajara habitan alrededor de 5,656,000 de personas de las cuales aproximadamente el 82% tiene vehiculo, esto a desembocado en una crisis de trafico y movilidad debido a la falta de planeación y desarrollo. Donde el trafico de las arterias principales de la ciudad (Lopez mateos, Vallarta, Carretera Chapala, etc.) se ven colapsadas, ante esto podemos ver como el trafico se esparce a arterias secundarias y terciarais, demostrando que la dinámica del flujo vehicular no es un proceso aislado por calle, sino un sistema en red altamente acoplado, donde un accidente o una inundación en una calle o avenida tiene repercusión que se propaga en las calles o avenidas aledañas.
-#### 1.2 Oportunidad y Enfoque:
+Sistema de pronóstico multi-horizonte de congestión y velocidades vehiculares sobre la red vial principal de la Zona Metropolitana de Guadalajara (ZMG), implementando Redes Neuronales Convolucionales sobre Grafos y Redes Recurrentes (ST-GNN: GCN + LSTM).
 
-Este proyecto propone un enfoque espacio-temporal sobre grafos (ST-GNN) que modela simultáneamente:
+---
 
-- **El espacio:** La estructura física de las avenidas y sus interconexiones (Grafo).
-    
-- **El tiempo:** La velocidad del tráfico y la tendencia de las últimas horas (Serie Temporal).
+## 1. Visión general y problemática
 
-Utilizaremos este enfoque ya que nos permite resolver los dos componentes principales del problema (espacio y tiempo), dado que con enfoques tradicionales nos quedamos cortos al no poder comprender y analizar la totalidad del problema, ya sea porque trabajan de manera aislada sin tomar en cuenta que el trafico se propaga al tener embotellamientos y que existe una arquitectura de caminos, o no toman en cuanta el factor del tiempo (horas pico, variabilidad de la semana y días festivos).
-### 2. Objetivos del Sistema:
+### 1.1 Contexto
+En el área metropolitana de Guadalajara habitan alrededor de 5.6 millones de personas, con una de las tasas de motorización más altas del país ~82% de posesión vehicular. Esto ha desembocado en una severa congestión vial en las arterias principales (Av. López Mateos, Av. Vallarta, Carretera a Chapala, Periférico, etc.).
 
-#### 2.1
+La congestión vial no es un fenómeno aislado por calle, sino un _sistema en red altamente acoplado:_ un accidente, una obra o un cuello de botella en un punto se propaga rápidamente a través de las vías secundarias y terciarias.
 
-1. **Predicción Directa Multi-Horizonte:** Estimar las velocidades y niveles de congestión a **30 y 60 minutos** en el futuro de forma simultánea.
-    
-2. **Plataforma Visual Interactiva:** Proveer un dashboard en tiempo real con codificación visual del nivel de servicio vial.
-    
-3. **Validación Metodológica:** Comparar el rendimiento del modelo frente a métodos tradicionales (Promedio Histórico, Modelos Persistentes, LSTM aislada).
+### 1.2 Oportunidad y Enfoque
+Este proyecto implementa un modelo espacio-temporal sobre grafos (**ST-GNN**) que modela simultáneamente:
+- **El Espacio:** La estructura física de las avenidas, sus interconexiones y distancias viales reales (Grafo Vial).
+- **El Tiempo:** El historial de velocidades y su tendencia temporal (Serie Temporal).
 
-Se opta por un enfoque multi-horizonte para evitar la acumulación iterativa de errores propia de los modelos autorregresivos, manteniendo un único modelo eficiente en memoria que captura la dinámica de propagación de tráfico a 30 y 60 minutos de forma consistente
+A diferencia de los enfoques tradicionales que analizan sensores aislados o no consideran la propagación topológica del tráfico, este enfoque maneja la conectividad espacial y el flujo temporal del tráfico.
 
-#### 2.2 Alcance y Cobertura
+---
 
-Se trabajara sobre el mapa de la Zona Metropolitana de Guadalajara, tomando solamente las principales vías y corredores.
-Se busca obtener alrededor de 400 nodos para la red de grafos con granularidad temporal de muestreo cada 5min en horarios predefinidos (dependiendo las consultas de la API).
+## 2. Objetivos del Sistema
 
-### 3. Arquitectura del Sistema:
+1. **Predicción Directa Multi-Horizonte:** Estimar las velocidades y niveles de congestión a _30 y 60 minutos_ hacia el futuro de forma simultánea, evitando la acumulación de error de los modelos autorregresivos iterativos.
+2. **Plataforma Visual Interactiva:** Proveer un dashboard interactivo en tiempo real que permita visualizar las velocidades y niveles de congestión estimados en la red.
+3. **Validación Metodológica:** Comparar el rendimiento del modelo frente a enfoques clásicos (Promedio Histórico, Modelo Persistente, LSTM univariada). 
+
+### 2.1 Alcance y Cobertura
+- **Región:** Zona Metropolitana de Guadalajara (ZMG), México.
+- **Topología:** Subred vial aproximada de 350 a 400 nodos representativos sobre corredores primarios y secundarios (`motorway`, `primary`, `secondary`).
+- **Granularidad Temporal:** Muestreo aproximadamente cada 5 minutos, lo que permite capturar cambios significativos en el flujo de tráfico.
+
+---
+
+## 3. Arquitectura del Sistema
 
 ```mermaid
 flowchart TD
-    %% Estilos simples
     classDef fase fill:#1e293b,stroke:#64748b,stroke-width:2px,color:#fff
     classDef model fill:#312e81,stroke:#6366f1,stroke-width:2px,color:#fff
     classDef ui fill:#831843,stroke:#ec4899,stroke-width:2px,color:#fff
 
     subgraph PASO1["1. Fuentes de Datos"]
-        A["Mapa ZMG<br/>(OSMnx)"]
-        B["Velocidades<br/>(Dataset / API)"]
+        A["Mapa ZMG<br/>(OSMnx / OpenStreetMap)"]
+        B["Velocidades<br/>(Dataset / API TomTom)"]
     end
 
     subgraph PASO2["2. Extracción de Grafo"]
-        G["NetworkX / OSMnx<br/>(Filtro de 400 Nodos)"]
+        G["NetworkX + OSMnx<br/>(Subred de ~400 Nodos)"]
     end
 
     subgraph PASO3["3. Preprocesamiento"]
-        C["Matriz de Adyacencia (W)"]
-        D["Tensor de Entrada<br/>(Historial 60 min)"]
+        C["Matriz de Adyacencia Gaussiana (W)<br/>"]
+        D["Tensores Espacio-Temporales (X, Y)<br/>(Historial 60 min, Horizontes 30/60 min)"]
     end
 
     subgraph PASO4["4. Modelo ST-GNN"]
@@ -74,6 +77,113 @@ flowchart TD
     class PASO5 ui
 ```
 
-### 4. Fundamentos Teóricos y Modelado Matemático:
+---
 
-Para este modelo espacio-temporal, no se utiliza una matriz de adyacencia binaria convencional (con valores en $\{0,1\}$), sino una Matriz de Adyacencia Gaussiana Ponderada ($W \in \mathbb{R}^{N \times N}$). Mediante un umbral de distancia (o mecanismo de $k$-NN) que fuerza a $0$ las conexiones entre nodos lejanos, y al implementar la estructura en un formato disperso (sparse matrix), se logra que la matriz conserve principalmente ceros. Esto reduce sustancialmente el consumo de memoria RAM/VRAM y acelera las operaciones matriciales durante la propagación de mensajes.Nuestra matriz $W$ guía a la red para determinar cuánta ponderación o importancia asignar a las condiciones de tráfico de los segmentos viales vecinos al momento de predecir el estado futuro de la red
+## 4. Fundamentos Teóricos y Modelado Matemático
+
+### Matriz de Adyacencia Gaussiana Ponderada ($W$)
+En lugar de una matriz binaria convencional ($\{0, 1\}$), se modela una **Matriz de Adyacencia Gaussiana Ponderada** ($W \in \mathbb{R}^{N \times N}$) calculada a partir de la distancia geodésica vial en la red ($d_{ij}$) obtenida mediante el algoritmo de Dijkstra:
+
+$$W_{ij} = \begin{cases} \exp\left( -\left(\frac{d_{ij}}{\sigma}\right)^2 \right), & \text{si } d_{ij} \le \kappa \text{ y } i \neq j \\ 0, & \text{en otro caso} \end{cases}$$
+
+Donde:
+- $d_{ij}$: Distancia de camino mínimo en metros entre el nodo $i$ y el nodo $j$.
+- $\sigma$: Desviación estándar de las distancias viales finitas de la red.
+- $\kappa$: Umbral de distancia de corte (`DISTANCE_THRESHOLD_METERS = 5000.0 m`).
+
+Esta formulación produce una matriz dispersa que prioriza la influencia de nodos cercanos y reduce sustancialmente el consumo de memoria y cómputo durante las operaciones de propagación de trafico en el grafo.
+
+---
+
+## 5. Evaluación del Modelo
+
+El desempeño del modelo se evalúa en cada horizonte de predicción ($t+30$ min y $t+60$ min) mediante:
+
+- **MAE (Mean Absolute Error):** Error promedio absoluto en km/h.
+- **RMSE (Root Mean Squared Error):** Penaliza errores grandes en picos de congestión.
+- **WMAPE (Weighted Mean Absolute Percentage Error):** Error relativo ponderado, robusto frente a velocidades cercanas a 0 (en caso de embotellamientos) evitando divisiones por cero.
+
+---
+
+## 6. Estructura del Repositorio
+
+```text
+TRAFICO/
+├── app/
+│   └── main.py              # Aplicación web interactiva (Streamlit + Folium)
+├── cache/                   # Cache de respuestas geográficas de OSMnx
+├── data/
+│   ├── processed/           # Artefactos procesados (Grafo .graphml, Matriz W .npy, Mapeo .json, Mapa .html)
+│   └── raw/                 # Datos brutos de tráfico y consultas API
+├── models/                  # Checkpoints y pesos del modelo ST-GNN (.pt / .pth)
+├── notebooks/               # Cuadernos de experimentación y análisis exploratorio
+├── src/
+│   ├── __init__.py          # Inicializador del paquete
+│   ├── config.py            # Parámetros globales y rutas del proyecto
+│   ├── graph_builder.py     # Extracción de la subred vial de OSMnx y cálculo de W
+│   └── visualize_graph.py   # Generador del mapa interactivo con Folium
+├── .env.example             # Plantilla de variables de entorno para APIs
+├── .gitignore               # Exclusión de entornos, cachés y archivos pesados
+├── pyproject.toml           # Configuración estándar del paquete y dependencias
+├── README.md                # Documentación del proyecto
+└── requirements.txt         # Versiones congeladas del entorno de ejecución
+```
+
+
+## 7. Requisitos y Configuración del Entorno
+
+Compatibilidad con PyTorch: Se recomienda utilizar **_Python 3.10, 3.11 o 3.12_**. Las versiones más recientes como Python 3.14 aún no cuentan con soporte oficial de binarios precompilados para PyTorch y librerías de grafos en Windows.
+
+<!-- Configuración Paso a Paso
+
+1. **Clonar el repositorio:**
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   ```
+
+2. **Crear y activar el entorno virtual:**
+   ```powershell
+   # En Windows (PowerShell)
+   python -m venv venv
+   .\venv\Scripts\Activate.ps1
+   ```
+
+3. **Instalar dependencias y registrar el paquete en modo editable:**
+   ```bash
+   pip install -r requirements.txt
+   pip install -e .
+   ```
+
+4. **Configurar variables de entorno:**
+   ```powershell
+   Copy-Item .env.example .env
+   # Edita .env con tus claves de API si vas a consultar tráfico en vivo
+   ```
+
+---
+
+## 8. Guía de Ejecución Rápida 
+
+### Paso 1: Generar el Grafo Vial y la Matriz de Adyacencia
+Descarga la red de corredores de la ZMG y genera la matriz Gaussiana $W$:
+```bash
+python src/graph_builder.py
+```
+*Genera:* `data/processed/graph_zmg.graphml`, `data/processed/adjacency_matrix.npy`, y `data/processed/node_mapping.json`.
+
+### Paso 2: Generar el Mapa Interactivo
+Renderiza la red y sus intersecciones sobre un mapa Folium:
+```bash
+python src/visualize_graph.py
+```
+*Genera:* `data/processed/mapa_nodos_zmg.html`.
+
+### Paso 3: Iniciar el Dashboard Web
+Inicia la plataforma visual de monitoreo en Streamlit:
+```bash
+streamlit run app/main.py
+```
+
+---
+
+-->
